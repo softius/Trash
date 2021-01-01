@@ -5,7 +5,7 @@ use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime as Time;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
@@ -39,11 +39,11 @@ class TrashBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->Users = TableRegistry::get('Muffin/Trash.Users', ['table' => 'trash_users']);
+        $this->Users = TableRegistry::getTableLocator()->get('Muffin/Trash.Users', ['table' => 'trash_users']);
         $this->Users->belongsToMany('Articles', [
             'className' => 'Muffin/Trash.Articles',
             'joinTable' => 'trash_articles_users',
@@ -94,10 +94,10 @@ class TrashBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::clear();
+        TableRegistry::getTableLocator()->clear();
         unset($this->Users, $this->Comments, $this->Articles, $this->Behavior);
     }
 
@@ -727,11 +727,11 @@ class TrashBehaviorTest extends TestCase
      * Test that getTrashField() throws exception if "field" is not specified
      * and cannot be introspected.
      *
-     * @expectedException RuntimeException
      * @return void
      */
     public function testGetTrashFieldException()
     {
+        $this->expectException(\RuntimeException::class);
         $trash = new TrashBehavior($this->Users);
         $trash->getTrashField();
     }

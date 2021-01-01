@@ -46,7 +46,7 @@ class TrashBehavior extends Behavior
      * @param array $config The config for this behavior.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         if (!empty($config['events'])) {
             $this->setConfig('events', $config['events'], false);
@@ -59,7 +59,7 @@ class TrashBehavior extends Behavior
      * @return array
      * @throws \InvalidArgumentException When events are configured in an invalid format.
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         $events = [];
         if ($this->getConfig('events') === false) {
